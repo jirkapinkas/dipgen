@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<http pattern="/resources/**" security="none" />
+
+	<http pattern="/login.jsp*" security="none" />
+
+	<http pattern="/register*" security="none" />
+
+	<http pattern="/register/**" security="none" />
+
+	<http auto-config="true" use-expressions="true">
+		<form-login login-page="/login.jsp"
+			authentication-success-handler-ref="authSuccessHandler"
+			authentication-failure-handler-ref="authFailureHandler" />
+		<logout logout-url="/logout" />
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/j_spring_security_check" access="permitAll" />
+		<intercept-url pattern="/favicon.ico" access="permitAll" />
+		<intercept-url pattern="/index.*" access="permitAll" />
+		<intercept-url pattern="/" access="permitAll" />
+		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+	</http>
+
+	<authentication-manager>
+		<authentication-provider>
+			<password-encoder hash="md5" />
+			<jdbc-user-service data-source-ref="dataSource"
+				authorities-by-username-query="select user.name, role.name from user
+												join user_role on user.user_id = user_role.user_id
+												join role on user_role.role_id = role.role_id
+												where user.name = ?"
+				users-by-username-query="select name,password,enabled from user where name = ?" />
+		</authentication-provider>
+	</authentication-manager>
+</beans:beans>
