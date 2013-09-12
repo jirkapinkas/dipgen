@@ -15,14 +15,16 @@
 	<http pattern="/register/**" security="none" />
 
 	<http auto-config="true" use-expressions="true">
-		<form-login login-page="/login.jsp"
+		<form-login login-page="/login.jsp" 
 			authentication-success-handler-ref="authSuccessHandler"
 			authentication-failure-handler-ref="authFailureHandler" />
 		<logout logout-url="/logout" />
+		<remember-me key="dipgen" />
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/j_spring_security_check" access="permitAll" />
 		<intercept-url pattern="/favicon.ico" access="permitAll" />
 		<intercept-url pattern="/index.*" access="permitAll" />
+		<intercept-url pattern="/tos.*" access="permitAll" />
 		<intercept-url pattern="/" access="permitAll" />
 		<intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 	</http>

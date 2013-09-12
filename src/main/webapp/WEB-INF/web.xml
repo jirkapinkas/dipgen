@@ -13,6 +13,16 @@
 		<welcome-file>index.htm</welcome-file>
 	</welcome-file-list>
 
+	<error-page>
+		<exception-type>java.lang.Exception</exception-type>
+		<location>/WEB-INF/views/errors/exception.jsp</location>
+	</error-page>
+
+	<error-page>
+		<exception-type>java.lang.Error</exception-type>
+		<location>/WEB-INF/views/errors/error.jsp</location>
+	</error-page>
+
 	<!-- The definition of the Root Spring Container shared by all Servlets 
 		and Filters -->
 	<context-param>

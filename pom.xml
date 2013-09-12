@@ -19,6 +19,12 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.8</version>
+		</dependency>
+
 		<!-- Spring security -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -375,6 +381,15 @@
 				<version>1.1</version>
 				<configuration>
 					<path>/${project.build.finalName}</path>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.16</version>
+				<configuration>
+					<skipTests>false</skipTests>
 				</configuration>
 			</plugin>
 

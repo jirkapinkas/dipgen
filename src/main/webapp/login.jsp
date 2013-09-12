@@ -1,33 +1,26 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<h1>Login</h1>
-<c:if test="${not empty param.login_error}">
-	<font color="red">Your login attempt was not successful, try
-		again.<br />
-	<br /> Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />.
-	</font>
-</c:if>
+<%@ include file="WEB-INF/views/layout/static.jsp"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="WEB-INF/views/layout/header.jsp">
+	<jsp:param value="Diploma Generator" name="title" />
+	<jsp:param value="login" name="page" />
+</jsp:include>
+
 <form name="f" action="<c:url value='j_spring_security_check'/>"
-	method="POST">
-	<table>
-		<tr>
-			<td>User:</td>
-			<td><input type='text' name='j_username'
-				value='<c:if test="${not empty param.login_error}">
-                          <c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>' /></td>
-		</tr>
-		<tr>
-			<td>Password:</td>
-			<td><input type='password' name='j_password'></td>
-		</tr>
-		<tr>
-			<td><input type="checkbox" name="_spring_security_remember_me"></td>
-			<td>Don't ask for my password for two weeks</td>
-		</tr>
-		<tr>
-			<td colspan='2'><input name="submit" type="submit"></td>
-		</tr>
-		<tr>
-			<td colspan='2'><input name="reset" type="reset"></td>
-		</tr>
-	</table>
+	method="POST" class="form-signin">
+<c:if test="${not empty param.login_error}">
+	<div class="alert alert-danger">
+		Your login attempt was not successful, try again.
+	</div>
+</c:if>
+<h2 class="form-signin-heading">Please sign in</h2>
+<c:url var="registerUrl" value="/register.html" />
+<span>Not registered? Register <a href="${registerUrl}">here</a></span>
+<input type="text" name="j_username" class="form-control" placeholder="Username" value="${username}" autofocus>
+<input type="password" name="j_password" class="form-control" placeholder="Password">
+<label class="checkbox">
+  <input type="checkbox" name="_spring_security_remember_me"> Remember me
+</label>
+<button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Sign in</button>
 </form>
+
+<jsp:include page="WEB-INF/views/layout/footer.jsp" />

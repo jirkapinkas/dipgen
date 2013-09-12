@@ -2,7 +2,6 @@ package com.dipgen.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,15 +41,15 @@ public class RegisterController {
 		userService.assignRole(user.getUserId(), roleUser.getRoleId());
 		return "redirect:/register.html?success=true";
 	}
-	
+
 	@RequestMapping("/check")
 	@ResponseBody
 	public String check(@RequestParam String name) {
-		if(userService.findOne(name) != null) {
+		if (userService.findOne(name) != null) {
 			return "selected";
 		} else {
 			return "free";
 		}
 	}
-	
+
 }

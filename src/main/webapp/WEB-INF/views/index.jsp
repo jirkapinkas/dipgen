@@ -1,17 +1,21 @@
-<%@ include file="layout/static.jsp" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<html>
-<head>
-<title>dipgen = Diploma Generator!</title>
+<%@ include file="layout/static.jsp"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="layout/header.jsp">
+	<jsp:param value="Diploma Generator" name="title" />
+	<jsp:param value="index" name="page" />
+</jsp:include>
 
-<%@ include file="layout/resources.jsp" %>
+<!-- Jumbotron -->
+<div class="jumbotron">
+	<h1>Diploma generator!</h1>
+	<p class="lead">Create your perfect diplomas using this free online
+		diploma generator. It is fully customizable and the output is a simple
+		PDF file ready to print or send to user using email.</p>
+	<p>
+		<a class="btn btn-lg btn-success" href="register.html">Get started
+			today ... it's free</a>
+	</p>
+</div>
 
-</head>
-<body>
 
-	<a href="diplomas.html">diplomas (requires login)</a>
-	
-	<a href="register.html">register</a>
-
-</body>
-</html>
+<jsp:include page="layout/footer.jsp" />

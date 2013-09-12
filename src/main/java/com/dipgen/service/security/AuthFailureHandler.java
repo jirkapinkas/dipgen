@@ -27,7 +27,8 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
 			user.setInvalidLoginCount(user.getInvalidLoginCount() + 1);
 			userService.update(user);
 		}
-		response.sendRedirect(request.getContextPath());
+		request.setAttribute("username", name);
+		request.getRequestDispatcher("/login.jsp?login_error=1").forward(request, response);
 	}
 
 }

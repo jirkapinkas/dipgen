@@ -37,6 +37,15 @@ public class GeneratorController {
 		return "generator";
 	}
 
+	public static class GenerateException extends RuntimeException {
+
+		private static final long serialVersionUID = 1L;
+
+		public GenerateException(Exception ex) {
+			super(ex);
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/diplomas/generate", method = RequestMethod.POST)
 	public void generateDiploma(@RequestParam int id, @RequestParam boolean singlePdf, HttpServletRequest request, HttpServletResponse response, Principal principal) throws IOException {
@@ -57,12 +66,11 @@ public class GeneratorController {
 			IOUtils.copy(inputStream, outputStream);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			throw new GenerateException(ex);
 		} finally {
 			if (inputStream != null) {
 				try {
 					inputStream.close();
-					outputStream.flush();
 					outputStream.close();
 				} catch (IOException e) {
 					e.printStackTrace();

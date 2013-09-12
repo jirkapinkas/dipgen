@@ -10,7 +10,6 @@
 
 	<!-- Scans within the base package of the application for @Components to 
 		configure as beans -->
-	<context:property-placeholder location="classpath:db.properties" />
 
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

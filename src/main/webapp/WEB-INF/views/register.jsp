@@ -1,43 +1,38 @@
 <%@ include file="layout/static.jsp"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Register</title>
+<jsp:include page="layout/header.jsp">
+	<jsp:param value="Diploma Generator: Register" name="title" />
+	<jsp:param value="register" name="page" />
+</jsp:include>
 
-<%@ include file="layout/resources.jsp"%>
 
-</head>
-<body>
-
-<c:if test="${param.success}">
-Registration successfull. Now you can <a href="diplomas.html">login</a>
-<br/>
-</c:if>
-
-	register new user:
-
-	<form:form commandName="user" cssClass="registerForm">
-		username: <form:input path="name" cssClass="name" />
-		<span class="nameError"></span>
-		<br />
-		password: <form:password path="password" cssClass="password1" />
-		<br />
-		password (retype): <input type="password" name="password2" id="password2" class="password2" />
-		<br />
-		email: <form:input path="email" cssClass="email" />
-		<br />
-		<input type="submit" />
-	</form:form>
+<form:form commandName="user" cssClass="registerForm form-signin">
+	<h2 class="form-signin-heading">Registration:</h2>
+	<c:if test="${param.success}">
+		<div class="alert alert-success">
+			Registration successfull. Now you can <a href="diplomas.html">login</a>
+		</div>
+	</c:if>
+	<div class="alert alert-info">
+		All fields are required.
+	</div>
+	<div class="nameError"></div>
+	<form:input path="name" cssClass="name form-control" placeholder="Username" /><br />
+	<form:password path="password" cssClass="password1 form-control" placeholder="Password" />
+	<input type="password" name="password2" id="password2" class="password2 form-control" placeholder="Password again" />
+	<form:input path="email" cssClass="email form-control" placeholder="Email" /><br />
+	<input type="checkbox" name="tos" class="tos" /> I aggree to <a href="tos.html" onclick='window.open(this.href, null, "height=768,width=1024,status=no,toolbar=no,menubar=no,location=no"); return false'>Terms of Service</a><br /><br />
+	<input type="submit" class="btn btn-lg btn-primary btn-block" />
+</form:form>
 	
-	all fields are required
-
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
 			$(".name").focusout(function(e) {
 				var name = $(this).val();
+				if(name == "") {
+					return;
+				}
 				$.ajax({
 					url: "${pageContext.request.contextPath}/register/check.html?name=" + name,
 							cache: false
@@ -55,10 +50,17 @@ Registration successfull. Now you can <a href="diplomas.html">login</a>
 				var p2 = $(".password2").val();
 				var name = $(".name").val();
 				var email = $(".email").val();
+				var tos = $(".tos").is(":checked");
 
 				if (p1 == "" || p2 == "" || name == "" || email == "") {
 					e.preventDefault();
 					alert("please fill out all fields");
+					return;
+				}
+				
+				if(tos == false) {
+					e.preventDefault();
+					alert("you must aggree to site's terms of service!");
 					return;
 				}
 
@@ -71,5 +73,4 @@ Registration successfull. Now you can <a href="diplomas.html">login</a>
 		});
 	</script>
 
-</body>
-</html>
+<jsp:include page="layout/footer.jsp" />

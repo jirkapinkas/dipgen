@@ -18,8 +18,8 @@ import com.dipgen.dto.DiplomaJsonDto;
 import com.dipgen.entity.Diploma;
 import com.dipgen.service.DiplomaJsonService;
 import com.dipgen.service.DiplomaService;
-import com.dipgen.service.DiplomaUtil;
 import com.dipgen.service.security.UserService;
+import com.dipgen.service.util.SvgUtil;
 
 @Controller
 public class DiplomaController {
@@ -64,7 +64,7 @@ public class DiplomaController {
 	@RequestMapping("/diplomas/edit")
 	public String editEditor(Model model, @RequestParam int id, Principal principal) {
 		Diploma diploma = diplomaService.findOne(id, principal.getName());
-		model.addAttribute("svgFile", DiplomaUtil.normalizeSvg(diploma.getSvg()));
+		model.addAttribute("svgFile", SvgUtil.normalizeSvg(diploma.getSvg()));
 		model.addAttribute("diplomaName", diploma.getName());
 		return "diploma-editor";
 	}

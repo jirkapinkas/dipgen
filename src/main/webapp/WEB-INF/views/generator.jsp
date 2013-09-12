@@ -8,7 +8,8 @@
 
 </head>
 <body>
-	<h1>Texts:</h1>
+
+	<div class="container">
 	
 	<%@ taglib tagdir="/WEB-INF/tags" prefix="mytags" %>
 	
@@ -20,19 +21,42 @@
 			<li><a href="#tabs-2">static texts</a></li>
 		</ul>
 		<div id="tabs-1">
-				<c:forEach items="${generatorStrings}" var="gs">
-					<c:if test="${gs.enabled eq true}">
-						<mytags:generator-string-div gs="${gs}" />
-					</c:if>
-				</c:forEach>
-				<br />
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>operations</th>
+						<th>name</th>
+						<th>type</th>
+						<th>value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${generatorStrings}" var="gs">
+						<c:if test="${gs.enabled eq true}">
+							<mytags:generator-string-div gs="${gs}" />
+						</c:if>
+					</c:forEach>
+				</tbody>
+			</table>
 		</div>
 		<div id="tabs-2">
-			<c:forEach items="${generatorStrings}" var="gs">
-				<c:if test="${gs.enabled eq false}">
-					<mytags:generator-string-div gs="${gs}" />
-				</c:if>
-			</c:forEach>
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>operations</th>
+						<th>name</th>
+						<th>type</th>
+						<th>value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${generatorStrings}" var="gs">
+						<c:if test="${gs.enabled eq false}">
+							<mytags:generator-string-div gs="${gs}" />
+						</c:if>
+					</c:forEach>
+				</tbody>
+			</table>
 		</div>
 		</div>
 		
@@ -44,7 +68,7 @@
 		
 		<br />
 		<div>
-			<input type="submit" class="buttonGenerate" />
+			<input type="submit" class="buttonGenerate btn btn-lg btn-success" />
 		</div>
 	</form>
 
@@ -74,40 +98,42 @@
 							cache: false
 				}).done(function(data) {
 					var htmlInputComponent = $(".html-input-" + id);
-					var div = $(".div-" + id);
+					var td = $(".td-input-" + id);
 					htmlInputComponent.remove();
 					if(type == 'TEXTFIELD') {
-						div.append('<input type="text" name="html-input-' + id + '" id="' + id + '" class="html-input-' + id + '" />');
+						td.append('<input type="text" name="html-input-' + id + '" id="' + id + '" class="html-input-' + id + '" />');
 					}
 					if(type == 'TEXTAREA') {
-						div.append('<textarea rows="3" cols="20" name="html-input-' + id + '" id="' + id + '" class="html-input-' + id + '"></textarea>');
+						td.append('<textarea rows="3" cols="20" name="html-input-' + id + '" id="' + id + '" class="html-input-' + id + '"></textarea>');
 					}
 
 				});
 			});
 		    $("#tabs").tabs();
-		    $("#radio").buttonset();
-		    $(".aRemove").button();
 		    
 		    $(".aRemove").click(function(e) {
 		    	e.preventDefault();
 		    	var curr = $(this);
 		    	var url = curr.attr("href");
+		    	var generatorId = curr.attr("id");
 				$.ajax({
 					url: url, cache: false
 				}).done(function(data) {
-			    	var parent = curr.parent();
-					var uberParent = parent.parent();
+			    	var parent = $(".div-" + generatorId);
+					var uberParent = parent.parent().parent().parent();
+			    	parent.remove();
 			    	if(uberParent.attr("id") == "tabs-1") {
-						$("#tabs-2").append(parent);
+						$("#tabs-2 table").append(parent);
 			    	} else {
-						$("#tabs-1").append(parent);
+						$("#tabs-1 table").append(parent);
 			    	}
 				});
 			});
 
 		});
 	</script>
+
+	</div>
 
 </body>
 </html>

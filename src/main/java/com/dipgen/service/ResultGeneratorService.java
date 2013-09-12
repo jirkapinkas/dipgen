@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dipgen.entity.Diploma;
 import com.dipgen.entity.GeneratorString;
+import com.dipgen.service.util.DiplomaUtil;
+import com.dipgen.service.util.ImageUtil;
+import com.dipgen.service.util.PdfUtil;
 
 @Service
 public class ResultGeneratorService {
@@ -26,6 +30,9 @@ public class ResultGeneratorService {
 		try {
 			File outputFile = File.createTempFile("pdf-zip-result", "tmp");
 			Diploma diploma = diplomaService.findOne(id, username);
+			String svg = diploma.getSvg();
+			// embedd images
+			svg = ImageUtil.embeddImages(IOUtils.toInputStream(svg));
 			GeneratorString textarea = generatorService.findEnabledTextarea(id);
 			List<GeneratorString> textfields = generatorService.findEnabledTextfields(id);
 			if (textarea != null) {
@@ -33,42 +40,48 @@ public class ResultGeneratorService {
 				String[] strings = parameters.get("html-input-" + textareaId)[0].split("\n");
 				List<File> outputPdfFiles = new ArrayList<File>();
 				for (String string : strings) {
-					String svg = diploma.getSvg();
+					string = string.trim();
 					svg = svg.replaceAll(textarea.getString(), string);
 					for (GeneratorString generatorString : textfields) {
-						String text = parameters.get("html-input-" + generatorString.getGeneratorId())[0];
+						String text = parameters.get("html-input-" + generatorString.getGeneratorId())[0].trim();
 						svg = svg.replaceAll(generatorString.getString(), text);
 					}
 					File tmpFile = File.createTempFile("pdf-single", "pdf");
-					DiplomaUtil.generatePdf(svg, tmpFile);
+					PdfUtil.generatePdf(svg, tmpFile);
 					outputPdfFiles.add(tmpFile);
 				}
 				if (singlePdf) {
-					DiplomaUtil.mergePdfs(outputPdfFiles, outputFile);
+					PdfUtil.mergePdfs(outputPdfFiles, outputFile);
 				} else {
-					DiplomaUtil.generateZip(outputPdfFiles, outputFile);
+					PdfUtil.generateZip(outputPdfFiles, outputFile);
 				}
 				// remove temporary files
 				for (File file : outputPdfFiles) {
-					file.delete();
+					if (!file.delete()) {
+						System.err.println("Could not delete file: " + file);
+					}
 				}
 			} else {
-				String svg = diploma.getSvg();
 				for (GeneratorString generatorString : textfields) {
-					String text = parameters.get("html-input-" + generatorString.getGeneratorId())[0];
+					String text = parameters.get("html-input-" + generatorString.getGeneratorId())[0].trim();
 					svg = svg.replaceAll(generatorString.getString(), text);
 				}
 				File tmpFile = File.createTempFile("pdf-single", "pdf");
-				DiplomaUtil.generatePdf(svg, tmpFile);
+				PdfUtil.generatePdf(svg, tmpFile);
 				if (singlePdf) {
-					outputFile.delete(); // delete tmp file, will be replaced by
-											// actual file on next line
+					// delete tmp file, will be replaced by
+					// actual file on next line
+					if (!outputFile.delete()) {
+						System.err.println("Could not delete file: " + outputFile);
+					}
 					outputFile = tmpFile;
 				} else {
 					List<File> pdfFiles = new ArrayList<File>();
 					pdfFiles.add(tmpFile);
-					DiplomaUtil.generateZip(pdfFiles, outputFile);
-					tmpFile.delete();
+					PdfUtil.generateZip(pdfFiles, outputFile);
+					if (!tmpFile.delete()) {
+						System.err.println("Could not delete file: " + outputFile);
+					}
 				}
 			}
 			return outputFile;

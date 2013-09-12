@@ -17,6 +17,7 @@ import com.dipgen.entity.GeneratorString.HtmlComponentType;
 import com.dipgen.repository.DiplomaRepository;
 import com.dipgen.repository.GeneratorStringRepository;
 import com.dipgen.service.security.InvalidUserException;
+import com.dipgen.service.util.SvgUtil;
 
 @Service
 @Transactional
@@ -43,10 +44,10 @@ public class GeneratorService {
 	public List<GeneratorString> getGeneratorStrings(int diplomaId, String username) {
 		Diploma diploma = diplomaRepository.findByDiplomaIdAndUserName(diplomaId, username);
 		if(diploma == null) {
-			throw new InvalidUserException();
+			throw new InvalidUserException("Invalid user!");
 		}
 		// create map of current diploma strings
-		List<String> diplomaStrings = DiplomaUtil.parseTexts(diploma.getSvg());
+		List<String> diplomaStrings = SvgUtil.parseTexts(diploma.getSvg());
 		HashMap<String, String> diplomaStringsMap = new HashMap<String, String>();
 		for (String string : diplomaStrings) {
 			diplomaStringsMap.put(string, string);

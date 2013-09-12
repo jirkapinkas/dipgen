@@ -23,7 +23,6 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		super.onAuthenticationSuccess(request, response, authentication);
-
 		String name = authentication.getName();
 		User user = userService.findOne(name);
 		user.setInvalidLoginCount(0);
