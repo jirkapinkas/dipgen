@@ -1,0 +1,10 @@
+<svg width="841" height="595" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <g>
+  <title>Layer 1</title>
+  <image xlink:href="{IMAGES-URL}yellow-border.png" id="svg_1" height="534.712276" width="831.000043" y="28.059543" x="1.999968"/>
+  <image xlink:href="{IMAGES-URL}smile.jpg" id="svg_2" height="140.267663" width="138.000056" y="105.732337" x="75.999944"/>
+  <text transform="matrix(1 0 0 1 0 0)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="35" id="svg_3" y="297" x="407" stroke-width="0" stroke="#000000" fill="#000000">diploma name</text>
+  <text transform="matrix(1 0 0 1 0 0)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" id="svg_4" y="412" x="636" stroke-width="0" stroke="#000000" fill="#000000">date</text>
+  <text id="svg_6" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="345" x="407" stroke-width="0" stroke="#000000" fill="#000000">person name</text>
+ </g>
+</svg>

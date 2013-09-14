@@ -26,6 +26,7 @@
 </form:form>
 	
 	<script type="text/javascript">
+		var availableUsername = false;
 		$(document).ready(function() {
 			
 			$(".name").focusout(function(e) {
@@ -38,9 +39,11 @@
 							cache: false
 				}).done(function(data) {
 					if(data == "free") {
-						$(".nameError").text("ok");
+						$(".nameError").html("<div class='alert alert-success'>This username is ok.</div>");
+						availableUsername = true;
 					} else {
-						$(".nameError").text("already taken! choose another name");
+						$(".nameError").html("<div class='alert alert-danger'>This username is already registered!</div>");
+						availableUsername = false;
 					}
 				});
 			});
@@ -67,6 +70,12 @@
 				if (p1 != p2) {
 					e.preventDefault();
 					alert("passwords must match!");
+					return;
+				}
+				
+				if(!availableUsername) {
+					e.preventDefault();
+					alert("this username is already registered!");
 					return;
 				}
 			})

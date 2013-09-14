@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dipgen.entity.security.Role;
 import com.dipgen.entity.security.Role.ROLE_TYPE;
 import com.dipgen.entity.security.User;
+import com.dipgen.service.DiplomaInitService;
 import com.dipgen.service.security.RoleService;
 import com.dipgen.service.security.UserService;
 
@@ -23,6 +24,9 @@ public class RegisterController {
 
 	@Autowired
 	private RoleService roleService;
+	
+	@Autowired
+	private DiplomaInitService diplomaInitService;
 
 	@ModelAttribute("user")
 	public User construct() {
@@ -39,6 +43,7 @@ public class RegisterController {
 		user = userService.create(user);
 		Role roleUser = roleService.findOne(ROLE_TYPE.ROLE_USER);
 		userService.assignRole(user.getUserId(), roleUser.getRoleId());
+		diplomaInitService.initUser(user);
 		return "redirect:/register.html?success=true";
 	}
 

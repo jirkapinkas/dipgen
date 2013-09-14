@@ -15,4 +15,9 @@ public class IndexController {
 	public String tos() {
 		return "tos";
 	}
+
+	@RequestMapping("/privacy-policy")
+	public String privacyPolicy() {
+		return "privacy-policy";
+	}
 }

@@ -1,8 +1,10 @@
 package com.dipgen.service.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -25,6 +27,19 @@ import eu.medsea.util.MimeUtil;
 
 public final class ImageUtilTest {
 
+	@Test
+	public void testGetDemoImage() throws IOException {
+		InputStream demoImageSmile = ImageUtil.getDemoImage("smile.jpg");
+		File fileSmile = new File("target/smile.jpg");
+		BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(fileSmile));
+		IOUtils.copy(demoImageSmile, outputStream);
+		outputStream.close();
+		assertEquals("image/jpeg", MimeUtil.getMagicMimeType(fileSmile));
+
+		InputStream errorImage = ImageUtil.getDemoImage("../META-INF/persistence.xml");
+		assertNull(errorImage);
+	}
+
 	private NodeList getImagesFromSvg(String inputSvg) throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
@@ -41,6 +56,7 @@ public final class ImageUtilTest {
 		InputStream inputStream = getClass().getResourceAsStream("/diploma1.svg");
 		String inputSvg = IOUtils.toString(inputStream);
 		assertEquals(2, getImagesFromSvg(inputSvg).getLength());
+		inputSvg = inputSvg.replace("{IMAGES-URL}", "classpath:/images/");
 		String svgEmbeddedImages = ImageUtil.embeddImages(IOUtils.toInputStream(inputSvg));
 		NodeList imagesFromSvg = getImagesFromSvg(svgEmbeddedImages);
 		assertEquals(2, imagesFromSvg.getLength());

@@ -1,0 +1,12 @@
+<svg width="841" height="595" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <g>
+  <title>Layer 1</title>
+  <image xlink:href="{IMAGES-URL}dark-red-border.png" id="svg_1" height="578.17054" width="833.000041" y="10.589768" x="2.999998"/>
+  <image xlink:href="{IMAGES-URL}up.jpg" id="svg_2" height="247.556833" width="322.999993" y="248.443167" x="131.000007"/>
+  <text y="216" xml:space="preserve" x="431" text-anchor="middle" stroke-width="0" stroke="#000000" id="svg_4" font-size="35" font-family="serif" fill="#000000">diploma name</text>
+  <text y="367" xml:space="preserve" x="597.19912" text-anchor="middle" stroke-width="0" stroke="#000000" id="svg_5" font-size="26" font-family="serif" fill="#000000">person name</text>
+  <text y="449" xml:space="preserve" x="597.19912" text-anchor="middle" stroke-width="0" stroke="#000000" id="svg_6" font-size="26" font-family="serif" fill="#000000">date</text>
+  <line y2="383" y1="383" x2="705.96479" x1="488.42114" stroke-width="5" id="svg_7" fill="none" stroke="#9f090a"/>
+  <line y2="469" y1="469" x2="705.96478" x1="488.42113" stroke-width="5" fill="none" stroke="#9f090a" id="svg_9"/>
+ </g>
+</svg>

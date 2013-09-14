@@ -1,0 +1,9 @@
+<svg width="841" height="595" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <g>
+  <title>Layer 1</title>
+  <image xlink:href="{IMAGES-URL}kids-play.jpg" id="svg_1" height="585.0824" width="779.99993" y="6.92138" x="36.00003"/>
+  <text transform="matrix(1 0 0 1 0 0)" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="32" id="svg_2" y="215" x="424" stroke-width="0" stroke="#000000" fill="#000000">diploma name</text>
+  <text id="svg_3" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="268" x="424" stroke-width="0" stroke="#000000" fill="#000000">person name</text>
+  <text id="svg_4" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="24" y="325" x="424" stroke-width="0" stroke="#000000" fill="#000000">date</text>
+ </g>
+</svg>

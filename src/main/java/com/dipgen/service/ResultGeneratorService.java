@@ -25,68 +25,64 @@ public class ResultGeneratorService {
 	@Autowired
 	private GeneratorService generatorService;
 
+	private List<File> generateDiplomasWithTextArea(String svgTemplate, Map<String, String[]> parameters, GeneratorString textarea, List<GeneratorString> textfields) throws IOException {
+		int textareaId = textarea.getGeneratorId();
+		String[] strings = parameters.get("html-input-" + textareaId)[0].split("\n");
+		List<File> outputPdfFiles = new ArrayList<File>();
+		for (String string : strings) {
+			string = string.trim();
+			String svg = svgTemplate;
+			svg = svg.replaceAll(textarea.getString(), string);
+			File tmpFile = generateDiplomaWithoutTextArea(svg, parameters, textfields);
+			outputPdfFiles.add(tmpFile);
+		}
+		return outputPdfFiles;
+	}
+
+	private File generateDiplomaWithoutTextArea(String svg, Map<String, String[]> parameters, List<GeneratorString> textfields) throws IOException {
+		for (GeneratorString generatorString : textfields) {
+			String text = parameters.get("html-input-" + generatorString.getGeneratorId())[0].trim();
+			svg = svg.replaceAll(generatorString.getString(), text);
+		}
+		File outputFile = File.createTempFile("pdf-single", "pdf");
+		PdfUtil.generatePdf(svg, outputFile);
+		return outputFile;
+	}
+
+	private File generateOutputFile(boolean singlePdf, List<File> outputPdfFiles) throws IOException {
+		File outputFile = File.createTempFile("pdf-zip-result", "tmp");
+		if (singlePdf) {
+			PdfUtil.mergePdfs(outputPdfFiles, outputFile);
+		} else {
+			PdfUtil.generateZip(outputPdfFiles, outputFile);
+		}
+		return outputFile;
+	}
+
+	// TODO TEST THIS!!!!
 	public File generate(int id, Map<String, String[]> parameters, boolean singlePdf, String username) {
-		// TODO REFACTOR AND TEST THIS!!!!
+		List<File> outputPdfFiles = new ArrayList<File>();
 		try {
-			File outputFile = File.createTempFile("pdf-zip-result", "tmp");
 			Diploma diploma = diplomaService.findOne(id, username);
-			String svg = diploma.getSvg();
+			String svgTemplate = diploma.getSvg();
 			// embedd images
-			svg = ImageUtil.embeddImages(IOUtils.toInputStream(svg));
+			svgTemplate = ImageUtil.embeddImages(IOUtils.toInputStream(svgTemplate));
 			GeneratorString textarea = generatorService.findEnabledTextarea(id);
 			List<GeneratorString> textfields = generatorService.findEnabledTextfields(id);
 			if (textarea != null) {
-				int textareaId = textarea.getGeneratorId();
-				String[] strings = parameters.get("html-input-" + textareaId)[0].split("\n");
-				List<File> outputPdfFiles = new ArrayList<File>();
-				for (String string : strings) {
-					string = string.trim();
-					svg = svg.replaceAll(textarea.getString(), string);
-					for (GeneratorString generatorString : textfields) {
-						String text = parameters.get("html-input-" + generatorString.getGeneratorId())[0].trim();
-						svg = svg.replaceAll(generatorString.getString(), text);
-					}
-					File tmpFile = File.createTempFile("pdf-single", "pdf");
-					PdfUtil.generatePdf(svg, tmpFile);
-					outputPdfFiles.add(tmpFile);
-				}
-				if (singlePdf) {
-					PdfUtil.mergePdfs(outputPdfFiles, outputFile);
-				} else {
-					PdfUtil.generateZip(outputPdfFiles, outputFile);
-				}
-				// remove temporary files
-				for (File file : outputPdfFiles) {
-					if (!file.delete()) {
-						System.err.println("Could not delete file: " + file);
-					}
-				}
+				outputPdfFiles.addAll(generateDiplomasWithTextArea(svgTemplate, parameters, textarea, textfields));
 			} else {
-				for (GeneratorString generatorString : textfields) {
-					String text = parameters.get("html-input-" + generatorString.getGeneratorId())[0].trim();
-					svg = svg.replaceAll(generatorString.getString(), text);
-				}
-				File tmpFile = File.createTempFile("pdf-single", "pdf");
-				PdfUtil.generatePdf(svg, tmpFile);
-				if (singlePdf) {
-					// delete tmp file, will be replaced by
-					// actual file on next line
-					if (!outputFile.delete()) {
-						System.err.println("Could not delete file: " + outputFile);
-					}
-					outputFile = tmpFile;
-				} else {
-					List<File> pdfFiles = new ArrayList<File>();
-					pdfFiles.add(tmpFile);
-					PdfUtil.generateZip(pdfFiles, outputFile);
-					if (!tmpFile.delete()) {
-						System.err.println("Could not delete file: " + outputFile);
-					}
-				}
+				outputPdfFiles.add(generateDiplomaWithoutTextArea(svgTemplate, parameters, textfields));
 			}
-			return outputFile;
+			return generateOutputFile(singlePdf, outputPdfFiles);
 		} catch (IOException e) {
 			throw new DiplomaUtil.SvgConversionException(e);
+		} finally {
+			for (File file : outputPdfFiles) {
+				if (!file.delete()) {
+					System.err.println("Could not delete file: " + file);
+				}
+			}
 		}
 	}
 }
