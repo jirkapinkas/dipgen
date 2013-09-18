@@ -10,10 +10,11 @@
 	<h1>Diploma generator!</h1>
 	<p class="lead">Create your perfect diplomas using this free online
 		diploma generator. It is fully customizable and the output is a simple
-		PDF file ready to print or send to user using email.</p>
+		PDF file ready to print (or you can send emails to your customers via
+		email).</p>
 	<p>
 		<a class="btn btn-lg btn-success" href="register.html">Get started
-			today ... it's free</a>
+			today</a>
 	</p>
 </div>
 

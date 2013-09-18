@@ -71,6 +71,19 @@
 			<input type="submit" class="buttonGenerate btn btn-lg btn-success" />
 		</div>
 	</form>
+	
+	<c:choose>
+		<c:when test="${isPremium}">
+			<script type="text/javascript">
+				var isPremium = true;
+			</script>
+		</c:when>
+		<c:otherwise>
+			<script type="text/javascript">
+				var isPremium = false;
+			</script>
+		</c:otherwise>
+	</c:choose>
 
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -86,6 +99,14 @@
 				if(textareaCount > 1) {
 					e.preventDefault();
 					alert("only one dynamic text can be multiple text!");
+				} else if(textareaCount == 1) {
+					var textarea = $("textarea");
+					var diplomas = textarea.val().split('\n');
+					var diplomasCount = diplomas.length;
+					if(diplomasCount > 5 && isPremium == false) {
+						alert("I'm sorry, but free users can generate max. 5 diplomas at one time. Premium users have no limit.");
+						e.preventDefault();
+					}
 				}
 			});
 			

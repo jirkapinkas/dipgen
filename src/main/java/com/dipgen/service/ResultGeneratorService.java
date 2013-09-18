@@ -12,9 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.dipgen.entity.Diploma;
 import com.dipgen.entity.GeneratorString;
+import com.dipgen.service.security.RoleService;
+import com.dipgen.service.security.UserService;
 import com.dipgen.service.util.DiplomaUtil;
 import com.dipgen.service.util.ImageUtil;
 import com.dipgen.service.util.PdfUtil;
+import com.dipgen.service.util.TextUtil;
 
 @Service
 public class ResultGeneratorService {
@@ -25,16 +28,38 @@ public class ResultGeneratorService {
 	@Autowired
 	private GeneratorService generatorService;
 
-	private List<File> generateDiplomasWithTextArea(String svgTemplate, Map<String, String[]> parameters, GeneratorString textarea, List<GeneratorString> textfields) throws IOException {
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private RoleService roleService;
+
+	public static class PremiumRestrictionException extends RuntimeException {
+
+		private static final long serialVersionUID = 1L;
+
+		public PremiumRestrictionException(String message) {
+			super(message);
+		}
+	}
+
+	private List<GeneratedFile> generateDiplomasWithTextArea(String svgTemplate, Map<String, String[]> parameters, GeneratorString textarea, List<GeneratorString> textfields, String username)
+			throws IOException {
 		int textareaId = textarea.getGeneratorId();
 		String[] strings = parameters.get("html-input-" + textareaId)[0].split("\n");
-		List<File> outputPdfFiles = new ArrayList<File>();
+		if (strings.length > 5) {
+			// restrict free users to ease server load
+			if (!userService.isPremium(username)) {
+				throw new PremiumRestrictionException("I'm sorry, but free users can generate max. 5 diplomas at one time. Premium users have no such limit.");
+			}
+		}
+		List<GeneratedFile> outputPdfFiles = new ArrayList<GeneratedFile>();
 		for (String string : strings) {
 			string = string.trim();
 			String svg = svgTemplate;
 			svg = svg.replaceAll(textarea.getString(), string);
 			File tmpFile = generateDiplomaWithoutTextArea(svg, parameters, textfields);
-			outputPdfFiles.add(tmpFile);
+			outputPdfFiles.add(new GeneratedFile(tmpFile, TextUtil.normalizeText(string)));
 		}
 		return outputPdfFiles;
 	}
@@ -49,7 +74,7 @@ public class ResultGeneratorService {
 		return outputFile;
 	}
 
-	private File generateOutputFile(boolean singlePdf, List<File> outputPdfFiles) throws IOException {
+	private File generateOutputFile(boolean singlePdf, List<GeneratedFile> outputPdfFiles) throws IOException {
 		File outputFile = File.createTempFile("pdf-zip-result", "tmp");
 		if (singlePdf) {
 			PdfUtil.mergePdfs(outputPdfFiles, outputFile);
@@ -61,7 +86,7 @@ public class ResultGeneratorService {
 
 	// TODO TEST THIS!!!!
 	public File generate(int id, Map<String, String[]> parameters, boolean singlePdf, String username) {
-		List<File> outputPdfFiles = new ArrayList<File>();
+		List<GeneratedFile> outputPdfFiles = new ArrayList<GeneratedFile>();
 		try {
 			Diploma diploma = diplomaService.findOne(id, username);
 			String svgTemplate = diploma.getSvg();
@@ -70,19 +95,46 @@ public class ResultGeneratorService {
 			GeneratorString textarea = generatorService.findEnabledTextarea(id);
 			List<GeneratorString> textfields = generatorService.findEnabledTextfields(id);
 			if (textarea != null) {
-				outputPdfFiles.addAll(generateDiplomasWithTextArea(svgTemplate, parameters, textarea, textfields));
+				outputPdfFiles.addAll(generateDiplomasWithTextArea(svgTemplate, parameters, textarea, textfields, username));
 			} else {
-				outputPdfFiles.add(generateDiplomaWithoutTextArea(svgTemplate, parameters, textfields));
+				File file = generateDiplomaWithoutTextArea(svgTemplate, parameters, textfields);
+				outputPdfFiles.add(new GeneratedFile(file, ""));
 			}
 			return generateOutputFile(singlePdf, outputPdfFiles);
 		} catch (IOException e) {
 			throw new DiplomaUtil.SvgConversionException(e);
 		} finally {
-			for (File file : outputPdfFiles) {
-				if (!file.delete()) {
-					System.err.println("Could not delete file: " + file);
+			for (GeneratedFile generatedFile : outputPdfFiles) {
+				if (!generatedFile.getFile().delete()) {
+					System.err.println("Could not delete file: " + generatedFile.getFile());
 				}
 			}
+		}
+	}
+
+	public static class GeneratedFile {
+		private File file;
+		private String name;
+
+		public GeneratedFile(File file, String name) {
+			this.file = file;
+			this.name = name;
+		}
+
+		public File getFile() {
+			return file;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setFile(File file) {
+			this.file = file;
+		}
+
+		public void setName(String name) {
+			this.name = name;
 		}
 	}
 }

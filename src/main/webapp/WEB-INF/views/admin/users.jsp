@@ -12,6 +12,7 @@
 		<tr>
 			<th>delete</th>
 			<th>name</th>
+			<th>active</th>
 			<th>roles</th>
 			<th>registration date</th>
 			<th>last login date</th>
@@ -24,6 +25,7 @@
 				<td><a href="users/delete.html?userId=${user.userId}"
 					class="aDelete btn btn-md btn-danger">delete</a></td>
 				<td>${user.name}</td>
+				<td>${user.enabled}</td>
 				<td><c:forEach items="${user.roles}" var="role">${role.name}<br />
 					</c:forEach></td>
 				<td>${user.registrationDate}</td>

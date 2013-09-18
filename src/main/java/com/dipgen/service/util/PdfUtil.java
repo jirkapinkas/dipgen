@@ -16,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.fop.svg.PDFTranscoder;
 import org.apache.pdfbox.util.PDFMergerUtility;
 
+import com.dipgen.service.ResultGeneratorService.GeneratedFile;
 import com.dipgen.service.util.DiplomaUtil.SvgConversionException;
 
 public class PdfUtil {
@@ -74,10 +75,10 @@ public class PdfUtil {
 	 * @param outputPdfFile
 	 *            Single output PDF file
 	 */
-	public static void mergePdfs(List<File> pdfFiles, File outputPdfFile) {
+	public static void mergePdfs(List<GeneratedFile> pdfFiles, File outputPdfFile) {
 		PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
-		for (File pdf : pdfFiles) {
-			pdfMergerUtility.addSource(pdf);
+		for (GeneratedFile pdf : pdfFiles) {
+			pdfMergerUtility.addSource(pdf.getFile());
 		}
 		pdfMergerUtility.setDestinationFileName(outputPdfFile.toString());
 		try {
@@ -87,17 +88,17 @@ public class PdfUtil {
 		}
 	}
 
-	public static void generateZip(List<File> pdfFiles, File outputZipFile) {
+	public static void generateZip(List<GeneratedFile> pdfFiles, File outputZipFile) {
 		byte[] buffer = new byte[1024];
 		ZipOutputStream zos = null;
 		try {
 			zos = new ZipOutputStream(new FileOutputStream(outputZipFile));
 			int index = 1;
-			for (File file : pdfFiles) {
+			for (GeneratedFile file : pdfFiles) {
 				FileInputStream in = null;
 				try {
-					zos.putNextEntry(new ZipEntry("diploma-" + index + ".pdf"));
-					in = new FileInputStream(file);
+					zos.putNextEntry(new ZipEntry(index + "-" + file.getName() + ".pdf"));
+					in = new FileInputStream(file.getFile());
 					int len;
 					while ((len = in.read(buffer)) > 0) {
 						zos.write(buffer, 0, len);

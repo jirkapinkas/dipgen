@@ -104,45 +104,55 @@ public class DiplomaInitService {
 		initDiploma(user, "/diploma3.svg", "children", imagesLocation, embeddImages);
 	}
 
+	private int initDatabase() {
+		Role roleAdmin = new Role();
+		roleAdmin.setName(ROLE_TYPE.ROLE_ADMIN);
+		roleAdmin = roleService.save(roleAdmin);
+
+		Role roleUser = new Role();
+		roleUser.setName(ROLE_TYPE.ROLE_USER);
+		roleUser = roleService.save(roleUser);
+
+		Role rolePremium = new Role();
+		rolePremium.setName(ROLE_TYPE.ROLE_PREMIUM);
+		rolePremium = roleService.save(rolePremium);
+
+		User userAdmin = new User();
+		userAdmin.setName("admin");
+		userAdmin.setPassword("admin");
+		userAdmin.setEmail("admin@email.com");
+		userAdmin = userService.create(userAdmin);
+		userService.assignRole(userAdmin.getUserId(), roleService.findOne(ROLE_TYPE.ROLE_ADMIN).getRoleId());
+		userService.assignRole(userAdmin.getUserId(), roleService.findOne(ROLE_TYPE.ROLE_USER).getRoleId());
+		userService.assignRole(userAdmin.getUserId(), roleService.findOne(ROLE_TYPE.ROLE_PREMIUM).getRoleId());
+		return roleUser.getRoleId();
+	}
+
+	private void createGuest(int roleUserId) {
+		User userGuest = new User();
+		userGuest.setName("guest");
+		userGuest.setPassword("guest");
+		userGuest.setEmail("guest@email.com");
+		userGuest = userService.create(userGuest);
+		userService.assignRole(userGuest.getUserId(), roleUserId);
+		initUser(userGuest, "classpath:/images/");
+	}
+
 	@PostConstruct
 	public void init() {
-		// create test users admin and guest with sample data
+		// init database and create test database
 		String hbm2ddlValue = (String) entityManagerFactory.getProperties().get("hibernate.hbm2ddl.auto");
 		if ("create".equals(hbm2ddlValue) || "create-drop".equals(hbm2ddlValue)) {
-			System.out.println("*** CREATE TEST DATA START ***");
-
-			Role roleAdmin = new Role();
-			roleAdmin.setName(ROLE_TYPE.ROLE_ADMIN);
-			roleAdmin = roleService.save(roleAdmin);
-
-			Role roleUser = new Role();
-			roleUser.setName(ROLE_TYPE.ROLE_USER);
-			roleUser = roleService.save(roleUser);
-
-			Role rolePremium = new Role();
-			rolePremium.setName(ROLE_TYPE.ROLE_PREMIUM);
-			rolePremium = roleService.save(rolePremium);
-
-			User userAdmin = new User();
-			userAdmin.setName("admin");
-			userAdmin.setPassword("admin");
-			userAdmin.setEmail("jirka.pinkas@gmail.com");
-			userAdmin = userService.create(userAdmin);
-			userService.assignRole(userAdmin.getUserId(), roleAdmin.getRoleId());
-			userService.assignRole(userAdmin.getUserId(), roleUser.getRoleId());
-			userService.assignRole(userAdmin.getUserId(), rolePremium.getRoleId());
-
-			User userGuest = new User();
-			userGuest.setName("guest");
-			userGuest.setPassword("guest");
-			userGuest.setEmail("jirka.pinkas@gmail.com");
-			userGuest = userService.create(userGuest);
-			userService.assignRole(userGuest.getUserId(), roleUser.getRoleId());
-
-			initUser(userGuest, "classpath:/images/");
-
-			System.out.println("*** CREATE TEST DATA FINISH ***");
-
+			System.out.println("*** CREATE TEST DATABASE START ***");
+			int roleUserId = initDatabase();
+			createGuest(roleUserId);
+			System.out.println("*** CREATE TEST DATABASE FINISH ***");
+		} else {
+			if (userService.findOne("admin") == null) {
+				System.out.println("*** INIT DATABASE START ***");
+				initDatabase();
+				System.out.println("*** INIT DATABASE FINISH ***");
+			}
 		}
 	}
 

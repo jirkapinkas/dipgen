@@ -14,7 +14,7 @@
 </c:if>
 <h2 class="form-signin-heading">Please sign in</h2>
 <c:url var="registerUrl" value="/register.html" />
-<span>Not registered? Register <a href="${registerUrl}">here</a></span>
+<div class="alert alert-warning">Not registered? Register <a href="${registerUrl}">here</a></div>
 <input type="text" name="j_username" class="form-control" placeholder="Username" value="${username}" autofocus>
 <input type="password" name="j_password" class="form-control" placeholder="Password">
 <label class="checkbox">

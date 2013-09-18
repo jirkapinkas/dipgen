@@ -25,7 +25,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.batik.apps.rasterizer.DestinationType;
 import org.apache.batik.apps.rasterizer.SVGConverter;
-import org.apache.batik.apps.rasterizer.SVGConverterException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -37,6 +36,8 @@ import org.w3c.dom.NodeList;
 import com.dipgen.service.util.DiplomaUtil.SvgConversionException;
 
 public class ImageUtil {
+	
+	public static double SCALE_RATIO = 1.5;
 
 	/**
 	 * Read demo images from classpath:/images. Won't allow reading files from
@@ -91,12 +92,12 @@ public class ImageUtil {
 		int originalWidth = originalImage.getWidth();
 		int originalHeight = originalImage.getHeight();
 		BufferedImage scaledImage = null;
-		if (originalWidth < (width * 1.2) || originalHeight < (height * 1.2)) {
+		if (originalWidth < (width * SCALE_RATIO) || originalHeight < (height * SCALE_RATIO)) {
 			// return original image, don't scale it, it would be waste of
 			// resources and image quality
 			scaledImage = originalImage;
 		} else {
-			scaledImage = getScaledImage(originalImage, (int) (width * 1.2), (int) (height * 1.2));
+			scaledImage = getScaledImage(originalImage, (int) (width * SCALE_RATIO), (int) (height * SCALE_RATIO));
 		}
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		boolean written = ImageIO.write(scaledImage, "png", outputStream);
@@ -132,7 +133,7 @@ public class ImageUtil {
 				boolean scaleImage = true;
 				if (href.getNodeValue().startsWith("classpath:")) {
 					streamImage = ImageUtil.class.getResourceAsStream(href.getNodeValue().replace("classpath:", ""));
-				} else if(href.getNodeValue().startsWith("http://")) { 
+				} else if (href.getNodeValue().startsWith("http://")) {
 					byte[] imageBytes = HttpClientUtil.get(href.getNodeValue());
 					streamImage = new ByteArrayInputStream(imageBytes);
 				} else if (href.getNodeValue().startsWith("data:image")) {
@@ -199,10 +200,20 @@ public class ImageUtil {
 			converter.setMaxHeight(height);
 			converter.setDst(tmpFile2);
 			converter.execute();
+
+			// ByteArrayOutputStream result = new ByteArrayOutputStream();
+			// Transcoder transcoder = new JPEGTranscoder();
+			// transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, 0.9F);
+			// // transcoder.addTranscodingHint(JPEGTranscoder.KEY_HEIGHT,
+			// (float) height);
+			// TranscoderInput transcoderInput = new
+			// TranscoderInput(IOUtils.toInputStream(svgString));
+			// TranscoderOutput transcoderOutput = new TranscoderOutput(result);
+			// transcoder.transcode(transcoderInput, transcoderOutput);
+			// return result.toByteArray();
+
 			return FileUtils.readFileToByteArray(tmpFile2);
-		} catch (IOException e) {
-			throw new SvgConversionException(e);
-		} catch (SVGConverterException e) {
+		} catch (Exception e) {
 			throw new SvgConversionException(e);
 		}
 

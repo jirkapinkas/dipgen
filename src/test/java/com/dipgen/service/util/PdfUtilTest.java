@@ -12,6 +12,8 @@ import java.util.zip.ZipFile;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.Test;
 
+import com.dipgen.service.ResultGeneratorService.GeneratedFile;
+
 import eu.medsea.util.MimeUtil;
 
 public final class PdfUtilTest {
@@ -32,9 +34,9 @@ public final class PdfUtilTest {
 		InputStream inputCsvStream2 = getClass().getResourceAsStream("/test-texts.svg");
 		File file2 = new File("target/test-texts-2.pdf");
 		PdfUtil.generatePdf(inputCsvStream2, file2);
-		ArrayList<File> list = new ArrayList<File>();
-		list.add(file1);
-		list.add(file2);
+		ArrayList<GeneratedFile> list = new ArrayList<GeneratedFile>();
+		list.add(new GeneratedFile(file1, "a"));
+		list.add(new GeneratedFile(file2, "b"));
 		File outputFile = new File("target/test-texts-merged.pdf");
 		PdfUtil.mergePdfs(list, outputFile);
 		assertEquals("application/pdf", MimeUtil.getMagicMimeType(outputFile));
@@ -53,10 +55,10 @@ public final class PdfUtilTest {
 		InputStream inputCsvStream3 = getClass().getResourceAsStream("/test-texts.svg");
 		File file3 = new File("target/test-texts-3.pdf");
 		PdfUtil.generatePdf(inputCsvStream3, file3);
-		ArrayList<File> list = new ArrayList<File>();
-		list.add(file1);
-		list.add(file2);
-		list.add(file3);
+		ArrayList<GeneratedFile> list = new ArrayList<GeneratedFile>();
+		list.add(new GeneratedFile(file1, "a"));
+		list.add(new GeneratedFile(file2, "b"));
+		list.add(new GeneratedFile(file3, "c"));
 		File outputFile = new File("target/test-texts-zipped.zip");
 		PdfUtil.generateZip(list, outputFile);
 		ZipFile zipFile = new ZipFile(outputFile);

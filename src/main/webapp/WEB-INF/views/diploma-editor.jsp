@@ -95,72 +95,10 @@ $(document).ready(function() {
 	<div id="sidepanel_handle" title="Drag left/right to resize side panel [X]">L a y e r s</div>
 </div>
 
-<div id="main_button">
-	<div id="main_icon" class="tool_button" title="Main Menu">
-		<span>SVG-Edit</span>
-		<div id="logo"></div>
-		<div class="dropdown"></div>
-	</div>
-		
-	<div id="main_menu"> 
-	
-		<!-- File-like buttons: New, Save, Source -->
-		<ul>
-			<li id="tool_clear">
-				<div></div>
-				New Image (N)
-			</li>
-			
-			<li id="tool_open" style="display:none;">
-				<div id="fileinputs">
-					<div></div>
-				</div>
-				Open Image
-			</li>
-			
-			<li id="tool_import" style="display:none;">
-				<div id="fileinputs_import">
-					<div></div>
-				</div>
-				Import Image
-			</li>
-			
-			<li id="tool_save">
-				<div></div>
-				Save Image (S)
-			</li>
-			
-			<li id="tool_export">
-				<div></div>
-				Export as PNG
-			</li>
-			
-			<li id="tool_docprops">
-				<div></div>
-				Document Properties (D)
-			</li>
-		</ul>
 
-		<p>
-			<a href="http://svg-edit.googlecode.com/" target="_blank">
-				SVG-edit Home Page
-			</a>
-		</p>
-
-		<button id="tool_prefs_option">
-			Editor Options
-		</button>
-
-	</div>
-	
-</div>
-
-
-
-<div id="tools_top" class="tools_panel">
+<div id="tools_top" class="tools_panel" style="left: 5px;">
 
 	<div id="editor_panel">
-		<div class="tool_sep"></div>
 		<div class="push_button" id="tool_source" title="Edit Source [U]"></div>
 		<div class="tool_button" id="tool_wireframe" title="Wireframe Mode [F]"></div>
 	</div>
@@ -198,7 +136,7 @@ $(document).ready(function() {
 	</div>
 
 	<div>
-		<div class="diploma_name">${diplomaName}</div>
+		<div class="diploma_name" style="text-decoration: underline;font-size: medium;padding: 2px;padding-left:5px;padding-right:5px;margin-left:5px;border: 1px solid black">${diplomaName}</div>
 	</div>
 	
 	<!-- Buttons when a single element is selected -->

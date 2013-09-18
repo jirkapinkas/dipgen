@@ -25,6 +25,8 @@
 		<intercept-url pattern="/j_spring_security_check" access="permitAll" />
 		<intercept-url pattern="/favicon.ico" access="permitAll" />
 		<intercept-url pattern="/index.*" access="permitAll" />
+		<intercept-url pattern="/contact.*" access="permitAll" />
+		<intercept-url pattern="/premium.*" access="permitAll" />
 		<intercept-url pattern="/tos.*" access="permitAll" />
 		<intercept-url pattern="/privacy-policy.*" access="permitAll" />
 		<intercept-url pattern="/" access="permitAll" />

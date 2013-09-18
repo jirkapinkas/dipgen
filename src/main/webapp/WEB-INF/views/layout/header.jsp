@@ -46,6 +46,17 @@ margin-bottom: 40px;
 				<li class="${param.page == 'diploma-list' ? 'active' : ''}">
 					<a href="${diplomasUrl}">Diplomas</a>
 				</li>
+
+				<c:url var="premiumUrl" value="/premium.html" />
+				<li class="${param.page == 'premium' ? 'active' : ''}">
+					<a href="${premiumUrl}">Premium</a>
+				</li>
+
+				<c:url var="contactUrl" value="/contact.html" />
+				<li class="${param.page == 'contact' ? 'active' : ''}">
+					<a href="${contactUrl}">Contact us</a>
+				</li>
+
 				<security:authorize access="hasRole('ROLE_ADMIN')">
 					<c:url var="adminUsersUrl" value="/admin/users.html" />
 					<li class="${param.page == 'admin-users' ? 'active' : ''}">
@@ -57,6 +68,10 @@ margin-bottom: 40px;
 				<security:authorize access="isAuthenticated()" var="loggedIn" />
 				<c:choose>
 					<c:when test="${loggedIn}">
+						<c:url var="userDetailsUrl" value="/user-details.html" />
+						<li class="${param.page == 'user-details' ? 'active' : ''}">
+							<a href="${userDetailsUrl}">My Profile</a>
+						</li>
 						<c:url var="logoutUrl" value="/logout" />
 						<li>
 							<a href="${logoutUrl}">Logout ${pageContext.request.userPrincipal.name}</a>

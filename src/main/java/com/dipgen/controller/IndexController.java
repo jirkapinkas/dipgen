@@ -20,4 +20,9 @@ public class IndexController {
 	public String privacyPolicy() {
 		return "privacy-policy";
 	}
+
+	@RequestMapping("/premium")
+	public String showPermiumOffer() {
+		return "premium";
+	}
 }

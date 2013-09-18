@@ -9,9 +9,9 @@
 	<configs>
 		<config>src/main/webapp/WEB-INF/spring/data.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/app/controllers.xml</config>
-		<config>src/main/webapp/WEB-INF/spring/db.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/security.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/task.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/db-dev.xml</config>
 	</configs>
 	<configSets>
 	</configSets>

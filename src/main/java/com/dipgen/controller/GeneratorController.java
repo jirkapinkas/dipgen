@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dipgen.entity.GeneratorString;
 import com.dipgen.service.GeneratorService;
 import com.dipgen.service.ResultGeneratorService;
+import com.dipgen.service.security.UserService;
 
 @Controller
 public class GeneratorController {
@@ -30,10 +31,14 @@ public class GeneratorController {
 
 	@Autowired
 	private ResultGeneratorService resultGeneratorService;
+	
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping("/diplomas/generate")
 	public String showGenerator(@RequestParam int id, Model model, Principal principal) {
 		model.addAttribute("generatorStrings", generatorService.getGeneratorStrings(id, principal.getName()));
+		model.addAttribute("isPremium", userService.isPremium(principal.getName()));
 		return "generator";
 	}
 
