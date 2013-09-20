@@ -22,7 +22,7 @@
 	<input type="password" name="password2" id="password2" class="password2 form-control" placeholder="Password again" />
 	<form:input path="email" cssClass="email form-control" placeholder="Email" /><br />
 	<input type="checkbox" name="tos" class="tos" /> I aggree to <a href="tos.html" onclick='window.open(this.href, null, "height=768,width=1024,status=no,toolbar=no,menubar=no,location=no"); return false'>Terms of Service</a><br /><br />
-	<input type="submit" class="btn btn-lg btn-primary btn-block" />
+	<input type="submit" class="btn btn-lg btn-primary btn-block" value="Register" />
 </form:form>
 	
 	<script type="text/javascript">

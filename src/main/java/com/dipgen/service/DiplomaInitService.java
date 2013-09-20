@@ -122,9 +122,9 @@ public class DiplomaInitService {
 		userAdmin.setPassword("admin");
 		userAdmin.setEmail("admin@email.com");
 		userAdmin = userService.create(userAdmin);
-		userService.assignRole(userAdmin.getUserId(), roleService.findOne(ROLE_TYPE.ROLE_ADMIN).getRoleId());
-		userService.assignRole(userAdmin.getUserId(), roleService.findOne(ROLE_TYPE.ROLE_USER).getRoleId());
-		userService.assignRole(userAdmin.getUserId(), roleService.findOne(ROLE_TYPE.ROLE_PREMIUM).getRoleId());
+		userService.assignRole(userAdmin.getUserId(), roleAdmin.getRoleId());
+		userService.assignRole(userAdmin.getUserId(), roleUser.getRoleId());
+		userService.assignRole(userAdmin.getUserId(), rolePremium.getRoleId());
 		return roleUser.getRoleId();
 	}
 

@@ -19,7 +19,7 @@
 
 	<import resource="data.xml" />
 
-	<beans profile="default">
+	<beans profile="dev">
 		<context:property-placeholder location="classpath:server-dev.properties" />
 		<import resource="db-dev.xml" />
 	</beans>

@@ -48,10 +48,13 @@
 				<td><strong>Cost: $24/year</strong></td>
 			</tr>
 			<tr>
-				<td></td>
+				<td><br />
+				<a class="btn btn-lg btn-primary"
+					href="register.html">Start for Free</a> <br />
+				</td>
 				<td><br />
 				<a class="btn btn-lg btn-success"
-					href="user-details.html?upgrade=true">Upgrade to Premium</a> <br />
+					href="user-details.html?billing=true">Upgrade to Premium</a> <br />
 				<br />
 					<p>
 						Do you miss some key feature in Premium? <a href="contact.html">Let

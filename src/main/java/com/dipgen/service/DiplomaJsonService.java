@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dipgen.dto.DiplomaJsonDto;
 import com.dipgen.entity.Diploma;
 import com.dipgen.repository.DiplomaRepository;
 
 @Service
+@Transactional
 public class DiplomaJsonService {
 
 	@Autowired

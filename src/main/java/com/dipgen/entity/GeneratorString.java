@@ -18,7 +18,7 @@ public class GeneratorString {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "generator_id")
 	private int generatorId;
 

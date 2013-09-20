@@ -19,7 +19,7 @@ import com.dipgen.entity.security.User;
 public class Diploma {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "diploma_id")
 	private Integer diplomaId;
 

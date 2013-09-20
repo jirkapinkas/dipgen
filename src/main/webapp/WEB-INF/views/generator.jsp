@@ -131,25 +131,6 @@
 				});
 			});
 		    $("#tabs").tabs();
-		    
-		    $(".aRemove").click(function(e) {
-		    	e.preventDefault();
-		    	var curr = $(this);
-		    	var url = curr.attr("href");
-		    	var generatorId = curr.attr("id");
-				$.ajax({
-					url: url, cache: false
-				}).done(function(data) {
-			    	var parent = $(".div-" + generatorId);
-					var uberParent = parent.parent().parent().parent();
-			    	parent.remove();
-			    	if(uberParent.attr("id") == "tabs-1") {
-						$("#tabs-2 table").append(parent);
-			    	} else {
-						$("#tabs-1 table").append(parent);
-			    	}
-				});
-			});
 
 		});
 	</script>

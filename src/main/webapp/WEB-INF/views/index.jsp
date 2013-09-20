@@ -8,7 +8,7 @@
 <!-- Jumbotron -->
 <div class="jumbotron">
 	<h1>Diploma generator!</h1>
-	<p class="lead">Create your perfect diplomas using this free online
+	<p class="lead">Create beautiful diplomas using this free online
 		diploma generator. It is fully customizable and the output is a simple
 		PDF file ready to print (or you can send emails to your customers via
 		email).</p>
