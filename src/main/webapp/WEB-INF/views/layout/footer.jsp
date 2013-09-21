@@ -13,7 +13,7 @@
 			My other projects: <a href="http://www.javavids.com" target="_blank">Java video turorials</a> |
 			<a href="http://sitemonitoring.sourceforge.net" target="_blank">Website monitoring software</a> |
 			<a href="http://www.java-skoleni.cz" target="_blank">Java školení (in Czech)</a> |
-			<a href="http://www.sql-skolein.cz" target="_blank">SQL školení (in Czech)</a> |
+			<a href="http://www.sql-skoleni.cz" target="_blank">SQL školení (in Czech)</a> |
 			
 	</p>
 </div>
