@@ -33,7 +33,7 @@ These users are available: <code>user / password</code>:<br />
 <p>
 first run: <code>mvn package</code><br />
 next goto target directory and run:<code>heroku deploy:war --war dipgen.war --app YOUR_APP</code><br />
-To deploy WAR to Heroku see this article: <a href="https://devcenter.heroku.com/articles/war-deployment">https://devcenter.heroku.com/articles/war-deployment</a><br />
+To deploy WAR to Heroku see this article: <a href="https://devcenter.heroku.com/articles/war-deployment" target="_blank">https://devcenter.heroku.com/articles/war-deployment</a><br />
 
 This user is available: <code>user / password</code>:<br />
 <code>admin / admin</code>
