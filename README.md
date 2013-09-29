@@ -11,6 +11,24 @@
 		href="http://www.dipgen.com" target="_blank">http://www.dipgen.com</a>
 </p>
 
+<h2>If you do want to play with Dipgen on your Java EE server:</h2>
+
+<h3>To run in development mode (using embedded hsql database):</h3>
+
+<p>
+first run: <code>mvn clean package</code><br />
+next run: <code>mvn jetty:run -Xmx256m -XX:MaxPermSize=256m -Djetty.port=8080 -Dspring.profiles.active="dev"</code>
+</p>
+
+<p>This will start embedded Jetty server on port 8080 and you can access your application here: <code>http://localhost:8080</code></p>
+
+<h3>To deploy on Heroku:</h3>
+
+<p>
+first run: <code>mvn package</code><br />
+next goto target directory and run:<code>heroku deploy:war --war dipgen.war --app YOUR_APP</code><br />
+To deploy WAR to Heroku see this article: <a href="https://devcenter.heroku.com/articles/war-deployment">https://devcenter.heroku.com/articles/war-deployment</a>
+</p>
 
 <h2>My other projects:</h2>
 
