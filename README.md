@@ -6,9 +6,9 @@
 	customers via email).</p>
 
 <p>
-	If you don't want to hassle with creating and maintaining a Java EE
+	<strong>If you don't want to hassle with creating and maintaining a Java EE
 	server and just want to use this diploma generator, goto <a
-		href="http://www.dipgen.com" target="_blank">http://www.dipgen.com</a>
+		href="http://www.dipgen.com" target="_blank">http://www.dipgen.com</a></strong>
 </p>
 
 <h2>If you do want to play with Dipgen on your Java EE server:</h2>
