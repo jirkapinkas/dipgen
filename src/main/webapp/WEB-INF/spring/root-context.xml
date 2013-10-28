@@ -19,11 +19,19 @@
 
 	<import resource="data.xml" />
 
+	<!-- Development environment using HSQL database -->
 	<beans profile="dev">
 		<context:property-placeholder location="classpath:server-dev.properties" />
 		<import resource="db-dev.xml" />
 	</beans>
 
+	<!-- Test environment using local Postgresql database -->
+	<beans profile="test">
+		<context:property-placeholder location="classpath:server-test.properties" />
+		<import resource="db-test.xml" />
+	</beans>
+
+	<!-- Production environment on Heroku -->
 	<beans profile="prod">
 		<context:property-placeholder location="classpath:server-prod.properties" />
 		<import resource="db-prod.xml" />
