@@ -36,7 +36,7 @@ import org.w3c.dom.NodeList;
 import com.dipgen.service.util.DiplomaUtil.SvgConversionException;
 
 public class ImageUtil {
-	
+
 	public static double SCALE_RATIO = 1.5;
 
 	/**
@@ -145,6 +145,7 @@ public class ImageUtil {
 						byte[] scaledImage = scaleImage(streamImage, (int) Double.parseDouble(width.getTextContent()), (int) Double.parseDouble(height.getTextContent()));
 						String base64Image = Base64.encodeBase64String(scaledImage);
 						href.setNodeValue("data:image/png;base64," + base64Image);
+						streamImage.close();
 					} else {
 						throw new SvgConversionException("Could not load image's input stream for embedding images, maybe not supported protocol?");
 					}

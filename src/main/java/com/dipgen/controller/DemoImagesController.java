@@ -23,6 +23,10 @@ public class DemoImagesController {
 		InputStream inputStream = ImageUtil.getDemoImage(name);
 		ServletOutputStream outputStream = response.getOutputStream();
 		IOUtils.copy(inputStream, outputStream);
+		outputStream.close();
+		if (inputStream != null) {
+			inputStream.close();
+		}
 	}
 
 }

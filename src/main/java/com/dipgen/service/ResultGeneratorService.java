@@ -2,6 +2,7 @@ package com.dipgen.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -91,7 +92,9 @@ public class ResultGeneratorService {
 			Diploma diploma = diplomaService.findOne(id, username);
 			String svgTemplate = diploma.getSvg();
 			// embedd images
-			svgTemplate = ImageUtil.embeddImages(IOUtils.toInputStream(svgTemplate));
+			try (InputStream stream = IOUtils.toInputStream(svgTemplate)) {
+				svgTemplate = ImageUtil.embeddImages(stream);
+			}
 			GeneratorString textarea = generatorService.findEnabledTextarea(id);
 			List<GeneratorString> textfields = generatorService.findEnabledTextfields(id);
 			if (textarea != null) {

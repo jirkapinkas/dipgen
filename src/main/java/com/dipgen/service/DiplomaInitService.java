@@ -1,6 +1,7 @@
 package com.dipgen.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
@@ -63,13 +64,15 @@ public class DiplomaInitService {
 	}
 
 	private void initDiploma(User user, String svgName, String diplomaName, String imagesLocation, boolean embeddImages) {
-		try {
+		try (InputStream stream = getClass().getResourceAsStream(svgName)) {
 			Diploma diploma = new Diploma();
 			diploma.setName(diplomaName);
-			String svg = SvgUtil.normalizeSvg(IOUtils.readLines(getClass().getResourceAsStream(svgName)));
+			String svg = SvgUtil.normalizeSvg(IOUtils.readLines(stream));
 			svg = svg.replace("{IMAGES-URL}", imagesLocation);
 			if (embeddImages) {
-				svg = ImageUtil.embeddImages(IOUtils.toInputStream(svg));
+				try (InputStream embeddImagesStream = IOUtils.toInputStream(svg)) {
+					svg = ImageUtil.embeddImages(embeddImagesStream);
+				}
 			}
 			diploma.setSvg(svg);
 			diploma.setUser(user);

@@ -30,8 +30,8 @@ public class PdfUtil {
 	 *            Output PDF file will be saved here
 	 */
 	public static void generatePdf(String inputSvg, File outputPdfFile) {
-		try {
-			generatePdf(IOUtils.toInputStream(inputSvg, "UTF-8"), outputPdfFile);
+		try (InputStream stream = IOUtils.toInputStream(inputSvg, "UTF-8")) {
+			generatePdf(stream, outputPdfFile);
 		} catch (IOException e) {
 			throw new SvgConversionException(e);
 		}
