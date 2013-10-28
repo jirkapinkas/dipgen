@@ -92,9 +92,9 @@ public class ResultGeneratorService {
 			Diploma diploma = diplomaService.findOne(id, username);
 			String svgTemplate = diploma.getSvg();
 			// embedd images
-			try (InputStream stream = IOUtils.toInputStream(svgTemplate)) {
-				svgTemplate = ImageUtil.embeddImages(stream);
-			}
+			InputStream stream = IOUtils.toInputStream(svgTemplate);
+			svgTemplate = ImageUtil.embeddImages(stream);
+			stream.close();
 			GeneratorString textarea = generatorService.findEnabledTextarea(id);
 			List<GeneratorString> textfields = generatorService.findEnabledTextfields(id);
 			if (textarea != null) {

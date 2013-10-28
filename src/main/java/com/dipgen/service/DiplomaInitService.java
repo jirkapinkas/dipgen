@@ -64,15 +64,17 @@ public class DiplomaInitService {
 	}
 
 	private void initDiploma(User user, String svgName, String diplomaName, String imagesLocation, boolean embeddImages) {
-		try (InputStream stream = getClass().getResourceAsStream(svgName)) {
+		InputStream stream = null;
+		try {
+			stream = getClass().getResourceAsStream(svgName);
 			Diploma diploma = new Diploma();
 			diploma.setName(diplomaName);
 			String svg = SvgUtil.normalizeSvg(IOUtils.readLines(stream));
 			svg = svg.replace("{IMAGES-URL}", imagesLocation);
 			if (embeddImages) {
-				try (InputStream embeddImagesStream = IOUtils.toInputStream(svg)) {
-					svg = ImageUtil.embeddImages(embeddImagesStream);
-				}
+				InputStream embeddImagesStream = IOUtils.toInputStream(svg);
+				svg = ImageUtil.embeddImages(embeddImagesStream);
+				embeddImagesStream.close();
 			}
 			diploma.setSvg(svg);
 			diploma.setUser(user);
@@ -96,6 +98,14 @@ public class DiplomaInitService {
 			generatorService.save(gsPersonName);
 		} catch (IOException ex) {
 			throw new DiplomaUtil.SvgConversionException("could not create user");
+		} finally {
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

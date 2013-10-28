@@ -73,10 +73,20 @@ public class SvgUtil {
 	 * @return List of all texts
 	 */
 	public static List<String> parseTexts(String svg) {
-		try (InputStream stream = IOUtils.toInputStream(svg, "UTF-8")) {
+		InputStream stream = null;
+		try {
+			stream = IOUtils.toInputStream(svg, "UTF-8");
 			return parseTexts(stream);
 		} catch (IOException ex) {
 			throw new SvgConversionException(ex);
+		} finally {
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
