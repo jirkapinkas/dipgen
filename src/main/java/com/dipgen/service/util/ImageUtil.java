@@ -200,18 +200,6 @@ public class ImageUtil {
 			converter.setMaxHeight(height);
 			converter.setDst(tmpFile2);
 			converter.execute();
-
-			// ByteArrayOutputStream result = new ByteArrayOutputStream();
-			// Transcoder transcoder = new JPEGTranscoder();
-			// transcoder.addTranscodingHint(JPEGTranscoder.KEY_QUALITY, 0.9F);
-			// // transcoder.addTranscodingHint(JPEGTranscoder.KEY_HEIGHT,
-			// (float) height);
-			// TranscoderInput transcoderInput = new
-			// TranscoderInput(IOUtils.toInputStream(svgString));
-			// TranscoderOutput transcoderOutput = new TranscoderOutput(result);
-			// transcoder.transcode(transcoderInput, transcoderOutput);
-			// return result.toByteArray();
-
 			return FileUtils.readFileToByteArray(tmpFile2);
 		} catch (Exception e) {
 			throw new SvgConversionException(e);
